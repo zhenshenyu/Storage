@@ -11,5 +11,6 @@ import scrapy
 class DongItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
+    ranking = scrapy.Field()
     link = scrapy.Field()
     title = scrapy.Field()
