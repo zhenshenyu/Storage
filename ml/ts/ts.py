@@ -19,7 +19,7 @@ optimizer = tf.train.GradientDescentOptimizer(0.5)
 train = optimizer.minimize(loss)
 
 # 初始化变量
-init = tf.initialize_all_variables()
+init = tf.global_variables_initializer()
 
 # 启动图 (graph)
 sess = tf.Session()
@@ -30,6 +30,3 @@ for step in range(0, 201):
     sess.run(train)
     if step % 20 == 0:
         print(step, sess.run(W), sess.run(b))
-
-
-tf.placeholder()

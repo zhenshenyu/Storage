@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from mnist import *
+# from mnist import *
 import tensorflow as tf
 import input_data
 
