@@ -382,17 +382,129 @@ public:
 class Solution14 {
 public:
     void Mirror(TreeNode *pRoot) {
+        if(pRoot){
+            Mirror(pRoot->right);
+            Mirror(pRoot->left);
+            TreeNode *tmp;
+            tmp=pRoot->left;
+            pRoot->left=pRoot->right;
+            pRoot->right=tmp;
+        }
+    }
+};
 
+//顺时针打印矩阵
+class Solution15 {
+public:
+    vector<int> printMatrix(const vector<vector<int>> &matrix) {
+        vector<int> res;
+        int line=matrix.size();
+        int column=matrix[0].size();
+        int i=0,j=0,k;
+        while(i<line-1&&j<column-1){
+            for(k=j;k<column;k++){
+                res.push_back(matrix[i][k]);
+            }
+            ++i;
+            for(k=i;k<line;k++){
+                res.push_back(matrix[k][column-1]);
+            }
+            --column;
+            for(k=column-1;k>=j;k--){
+                res.push_back(matrix[line-1][k]);
+            }
+            --line;
+            for(k=line-1;k>=i;k--){
+                res.push_back(matrix[k][j]);
+            }
+            --j;
+        }
+        if(i==line-1&&j<column){
+            for(k=j;k<column;k++){
+                res.push_back(matrix[i][k]);
+            }
+        } else if(j==column-1&&i<column){
+            for(k=i;k<line;k++){
+                res.push_back(matrix[k][j]);
+            }
+        }
+        return res;
+    }
+};
+
+class Solution16 {
+    stack<int> data_stack,min_stack;
+public:
+    void push(int value) {
+        data_stack.push(value);
+        if(min_stack.empty()||value<=min_stack.top()){
+            min_stack.push(value);
+        }
+    }
+    void pop() {
+        if(data_stack.top()==min_stack.top()){
+            min_stack.pop();
+        }
+        data_stack.pop();
+    }
+    int top() {
+        return data_stack.top();
+    }
+    int min() {
+        return min_stack.top();
+    }
+};
+
+class Solution17 {
+public:
+    bool IsPopOrder(vector<int> pushV,vector<int> popV) {
+        stack<int> sta;
+        for (int &pos : pushV) {
+            sta.push(pos);
+            if(pos ==popV.front()){
+                sta.pop();
+                popV.erase(popV.begin());
+            }
+        }
+        for(int &pos: popV){
+            if(pos==sta.top()){
+                sta.pop();
+            } else{
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
+class Solution18 {
+    vector<int> vec;
+    queue<TreeNode*> que;
+public:
+    vector<int> PrintFromTopToBottom(TreeNode* root) {
+        if(!root)
+            return vec;
+        Pushqueue(root);
+    }
+
+    void Pushqueue(TreeNode* root){
+        while(!que.empty()){
+            vec.push_back(que.front()->val);
+            que.push()
+        }
+        if(root->left){
+            que.push(root->left);
+            que.push(root->right);
+        }
     }
 };
 
 int main(){
-    Solution13 so;
-    TreeNode *a=new TreeNode(7);
-    a->left=new TreeNode(3);
-    a->left->right=new TreeNode(4);
-    TreeNode *b=new TreeNode(3);
-    b->right=new TreeNode(4);
-    cout<<so.HasSubtree(a,b);
+    Solution16 so;
+    so.push(7);
+    so.push(5);
+    so.push(8);
+    cout<<so.top();
+    cout<<so.min();
 }
 
