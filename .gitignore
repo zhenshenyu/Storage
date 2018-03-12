@@ -3,3 +3,4 @@
 data/
 *data/
 daily_news/
+cmake-build-debug/

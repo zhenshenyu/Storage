@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <vector>
 #include <stack>
+#include <queue>
 
 
 using namespace std;
@@ -148,28 +149,250 @@ public:
         int low=0,high=len-1;
         int min = rotateArray[0];
         int mid=low+(high-low)/2;
-        while(low<high&&mid>0){
+        while(low<high){
             if (rotateArray[mid] < min) {
                 min = rotateArray[mid];
-                high = mid-1;
+                high = mid;
                 mid=low+(high-low)/2;
             } else if (rotateArray[mid] > min) {
                 low = mid+1;
                 mid=low+(high-low)/2;
             } else {
-                --mid;
+                while(low<high){
+                    if(rotateArray[low]<min){
+                        min=rotateArray[low];
+                    }
+                    ++low;
+                }
+                break;
             }
         }
         return min;
     }
 };
 
+
+class Solution6 {
+public:
+    int jumpFloor(int number) {
+        if(number<=0){
+            return 0;
+        }
+        if(number==1){
+            return 1;
+        }
+        if(number==2){
+            return 2;
+        }
+        int bef1=1,bef2=2,res=0;
+        for(int i=0;i<number-2;i++){
+            res=bef1+bef2;
+            bef1=bef2;
+            bef2=res;
+        }
+        return res;
+    }
+};
+
+class Solution7 {
+public:
+    int jumpFloorII(int number) {
+        if(number<=0){
+            return 0;
+        }
+        int res=1;
+        for(int i=0;i<number-1;i++){
+            res*=2;
+        }
+        return res;
+    }
+};
+
+
+// 数值的整数次方
+class Solution8 {
+public:
+    double Power(double base, int exponent) {
+        bool sign= true;
+        if(exponent==0){
+            return 1;
+        }
+        if(base>-0.00001&&base<0.00001){
+            return 0;
+        }
+        double res=1;
+        if(exponent<0){
+            exponent=-exponent;
+            sign= false;
+        }
+        while(exponent){
+            if(exponent&1){
+                res*=base;
+            }
+            base*=base;
+            exponent>>=1;
+        }
+        return sign?res:1/res;
+    }
+};
+
+
+//使奇数位于偶数前
+class Solution9 {
+public:
+    void reOrderArray(vector<int> &array) {
+        queue<int> even;
+        for(vector<int>::iterator itr=array.begin();itr!=array.end();itr++){
+            if(!(*itr%2)){
+                even.push(*itr);
+                array.erase(itr);
+                itr--;
+            }
+        }
+        while(!even.empty()){
+            array.push_back(even.front());
+            even.pop();
+        }
+    }
+};
+
+
+// 输出倒数第k个节点
+class Solution10 {
+public:
+    ListNode* FindKthToTail(ListNode* pListHead, unsigned int k) {
+        ListNode *target=pListHead;
+        ListNode *end=target;
+        for(int i=0;i<k;++i){
+            if(!end){
+                return nullptr;
+            }
+            end=end->next;
+        }
+        for(end;end;end=end->next){
+            target=target->next;
+        }
+        return target;
+    }
+};
+
+// 反转链表
+class Solution11 {
+public:
+    ListNode* ReverseList(ListNode* pHead) {
+        if(!pHead||!pHead->next){
+            return pHead;
+        }
+        ListNode *before,*now,*after;
+        before=pHead;
+        now=pHead->next;
+        before->next=NULL;
+        while(now){
+            after=now->next;
+            now->next=before;
+            before=now;
+            now=after;
+        }
+        return before;
+    }
+};
+
+//两个链表的排序
+class Solution12 {
+public:
+    ListNode* Merge(ListNode* pHead1, ListNode* pHead2){
+        if(!pHead1){
+            return pHead2;
+        }
+        if(!pHead2){
+            return pHead1;
+        }
+        ListNode *res=pHead1;
+        ListNode *after;
+        while(pHead1->next&&pHead2){
+            if(pHead1->val<pHead2->val){
+                if((pHead1->next->val)>=pHead2->val){
+                    after=pHead2->next;
+                    pHead2->next=pHead1->next;
+                    pHead1->next=pHead2;
+                    pHead1=pHead1->next;
+                    pHead2=after;
+                } else{
+                    pHead1=pHead1->next;
+                    while(pHead1->next){
+                        if((pHead1->next->val)>=pHead2->val){
+                            after=pHead2->next;
+                            pHead2->next=pHead1->next;
+                            pHead1->next=pHead2;
+                            pHead1=pHead1->next;
+                            pHead2=after;
+                            break;
+                        } else{
+                            pHead1=pHead1->next;
+                        }
+                    }
+                }
+            } else {
+                after=pHead2->next;
+                pHead2->next=pHead1;
+                pHead1=pHead2;
+                pHead2=after;
+                res=pHead1;
+            }
+        }
+        if(pHead2){
+            pHead1->next=pHead2;
+        }
+        return res;
+    }
+};
+
+// 判断子树
+class Solution13 {
+public:
+    bool HasSubtree(TreeNode* pRoot1, TreeNode* pRoot2){
+        if(!pRoot1||!pRoot2){
+            return false;
+        }
+        if(pRoot1->val==pRoot2->val){
+            if(Equaltree(pRoot1,pRoot2)){
+                return true;
+            }
+        }
+        return HasSubtree(pRoot1->left, pRoot2) || HasSubtree(pRoot1->right, pRoot2);
+
+    }
+
+    bool Equaltree(TreeNode* pRoot1,TreeNode* pRoot2){
+        if(!pRoot1){
+            return pRoot2==NULL;
+        }
+        if(!pRoot2){
+            return true;
+        }
+        if(pRoot1->val==pRoot2->val){
+            return Equaltree(pRoot1->left,pRoot2->left)&&Equaltree(pRoot1->right,pRoot2->right);
+        } else{
+            return false;
+        }
+    }
+};
+
+//二叉树镜像
+class Solution14 {
+public:
+    void Mirror(TreeNode *pRoot) {
+
+    }
+};
+
 int main(){
-//    vector<int> tes={6501,6828,6963,7036,7422,7674,8146,8468,8704,8717,9170,9359,9719,9895,9896,9913,9962,154,293,334,
-//                     492,1323,1479,1539,1727,1870,1943,2383,2392,2996,3282,3812,3903,4465,4605,4665,4772,4828,5142,5437,
-//                     5448,5668,5706,5725,6300,6335};
-    vector<int> tes={1,2,0,0,2,1,1};
-    Solution5 sol;
-    cout<<sol.minNumberInRotateArray(tes);
+    Solution13 so;
+    TreeNode *a=new TreeNode(7);
+    a->left=new TreeNode(3);
+    a->left->right=new TreeNode(4);
+    TreeNode *b=new TreeNode(3);
+    b->right=new TreeNode(4);
+    cout<<so.HasSubtree(a,b);
 }
 
