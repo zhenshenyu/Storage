@@ -641,7 +641,7 @@ public:
 class Solution24 {
 public:
     int MoreThanHalfNum_Solution(vector<int> numbers) {
-        int now;
+        int now=numbers.front();
         int count=0;
         for(auto num:numbers){
             if(count==0){
