@@ -1,8 +1,10 @@
 #include <iostream>
 #include <cstdio>
 #include <vector>
+#include <map>
 #include <stack>
 #include <queue>
+#include <algorithm>
 
 
 using namespace std;
@@ -400,8 +402,8 @@ class Solution15 {
 public:
     vector<int> printMatrix(const vector<vector<int>> &matrix) {
         vector<int> res;
-        int line=matrix.size();
-        int column=matrix[0].size();
+        auto line=int(matrix.size());
+        auto column=int(matrix[0].size());
         int i=0,j=0,k;
         while(i<line-1&&j<column-1){
             for(k=j;k<column;k++){
@@ -479,34 +481,200 @@ public:
     }
 };
 
+//层序遍历
 class Solution18 {
-    vector<int> vec;
-    queue<TreeNode*> que;
 public:
     vector<int> PrintFromTopToBottom(TreeNode* root) {
-        if(!root)
+        vector<int> vec;
+        if(!root){
             return vec;
-        Pushqueue(root);
+        }
+        queue<TreeNode*> que;
+        que.push(root);
+        TreeNode* tmp;
+        while(!que.empty()){
+            tmp=que.front();
+            if(tmp->left){
+                que.push(tmp->left);
+            }
+            if(tmp->right){
+                que.push(tmp->right);
+            }
+            vec.push_back(tmp->val);
+            que.pop();
+        }
+        return vec;
+    }
+};
+
+class Solution19 {
+public:
+    bool VerifySquenceOfBST(const vector<int> &sequence) {
+        if(sequence.empty()){
+            return false;
+        }
+        return VerifyPart(sequence,0,sequence.size()-1);
     }
 
-    void Pushqueue(TreeNode* root){
-        while(!que.empty()){
-            vec.push_back(que.front()->val);
-            que.push()
+    bool VerifyPart(const vector<int> &sequence,int begin,int end){
+        if(begin>=end){
+            return true;
         }
+        int root=sequence[end];
+        int pos=begin;
+        while(pos<end&&sequence[pos]<root)pos++;
+        for(int i=pos;i<=end-1;++i){
+            if(sequence[i]<root){
+                return false;
+            }
+        }
+        return VerifyPart(sequence,begin,pos-1)&&VerifyPart(sequence,pos,end-1);
+    }
+};
+
+//计算1+2+...+n
+class Solution20 {
+public:
+    int Sum_Solution(int n) {
+        int res;
+        res=n;
+        return res&&(res+=Sum_Solution(n-1));
+    }
+};
+
+
+//找出所有与expectNumber相等的路径
+class Solution21 {
+    vector<vector<int>> res;
+    vector<int> tmp;
+public:
+    vector<vector<int> > FindPath(TreeNode* root,int expectNumber) {
+        if(!root){
+            return res;
+        }
+        Judge(root,expectNumber);
+        return res;
+    }
+
+    void Judge(TreeNode* root,int left){
+        left-=root->val;
+        tmp.push_back(root->val);
         if(root->left){
-            que.push(root->left);
-            que.push(root->right);
+            Judge(root->left,left);
         }
+        if(root->right){
+            Judge(root->right,left);
+        }
+        if(!root->left&&!root->right&&left==0){
+            res.push_back(tmp);
+        }
+        tmp.pop_back();
+    }
+};
+
+//二叉搜索树与双向链表
+class Solution22 {
+    vector<TreeNode *> nodes;
+    void Insert_node(TreeNode* root){
+        if(root->left){
+            Insert_node(root->left);
+        }
+        nodes.push_back(root);
+        if(root->right){
+            Insert_node(root->right);
+        }
+    }
+public:
+    TreeNode* Convert(TreeNode* pRootOfTree)
+    {
+        if(!pRootOfTree){
+            return NULL;
+        }
+        Insert_node(pRootOfTree);
+        int len=nodes.size();
+        for(int i=0;i<len-1;++i){
+            nodes[i]->right=nodes[i+1];
+        }
+        for(int i=len-1;i>0;--i){
+            nodes[i]->left=nodes[i-1];
+        }
+        return nodes[0];
+    }
+};
+
+
+//****字符串排列****
+class Solution23 {
+    vector<string> res;
+    void Forward(const string &str,string::iterator itr){
+        if(itr+1==str.end()){
+            return;
+        }
+        Forward(str,itr+1);
+        for(auto pos=itr+1;pos!=str.end();pos++){
+            if(*itr!=*pos){
+                char t=*itr;
+                *itr=*pos;
+                *pos=t;
+                Forward(str,itr+1);
+                res.push_back(str);
+                *pos=*itr;
+                *itr=t;
+            }
+        }
+    }
+public:
+    vector<string> Permutation(string str) {
+        if(str.empty()){
+            return res;
+        }
+        res.push_back(str);
+        if(str.size()==1){
+            return res;
+        }
+        Forward(str,str.begin());
+        sort(res.begin(),res.end());
+        return res;
+    }
+};
+
+
+//数组中次数超过一半的数字
+class Solution24 {
+public:
+    int MoreThanHalfNum_Solution(vector<int> numbers) {
+        int now=numbers.front();
+        int count=0;
+        for(auto num:numbers){
+            if(count==0){
+                now=num;
+                ++count;
+            } else if(now==num) {
+                ++count;
+            } else{
+                --count;
+            }
+        }
+        if(count>0){
+            count=0;
+            for(auto num:numbers){
+                if(num==now){
+                    count++;
+                }
+            }
+            if(count>numbers.size()/2){
+                return now;
+            }
+        }
+        return 0;
     }
 };
 
 int main(){
-    Solution16 so;
-    so.push(7);
-    so.push(5);
-    so.push(8);
-    cout<<so.top();
-    cout<<so.min();
+    Solution23 so;
+    string str="bba";
+    auto res=so.Permutation(str);
+    for (auto &re : res) {
+        cout<< re <<endl;
+    }
 }
-
