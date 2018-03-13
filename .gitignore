@@ -1,5 +1,7 @@
-.idea/
-.idea
-*.pyc
-*.json
 daily_mail.py
+.idea/
+*.pyc
+data/
+*data/
+daily_news/
+cmake-build-debug/
