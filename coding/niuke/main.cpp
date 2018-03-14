@@ -87,8 +87,9 @@ public:
         for(ListNode *i=head;i;i=i->next){
             sta.push(i->val);
         }
-        while(sta.size()){
-            vec.push_back(sta.top());
+        while(!sta.empty()){
+            int elem=sta.top();
+            vec.push_back(elem);
             sta.pop();
         }
         return vec;
@@ -122,16 +123,17 @@ public:
     void push(int node) {
         stack1.push(node);
     }
-
     int pop() {
         while (!stack1.empty()) {
-            stack2.push(stack1.top());
+            int elem = stack1.top();
+            stack2.push(elem);
             stack1.pop();
         }
         int res=stack2.top();
         stack2.pop();
         while (!stack2.empty()) {
-            stack1.push(stack2.top());
+            int elem=stack2.top();
+            stack1.push(elem);
             stack2.pop();
         }
         return res;
