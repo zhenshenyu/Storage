@@ -1,3 +1,0 @@
-/home/shenyu/git/asite/coding/niuke/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/shenyu/git/asite/coding/niuke/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/shenyu/git/asite/coding/niuke/cmake-build-debug/CMakeFiles/LeetCode.dir
