@@ -1,11 +1,11 @@
 #include <iostream>
 #include <cstdio>
 #include <vector>
+#include <list>
 #include <map>
 #include <stack>
 #include <queue>
 #include <algorithm>
-
 
 using namespace std;
 
@@ -668,11 +668,83 @@ public:
     }
 };
 
-int main(){
-    Solution23 so;
-    string str="bba";
-    auto res=so.Permutation(str);
-    for (auto &re : res) {
-        cout<< re <<endl;
+
+//******最小的K个数******
+//TODO 堆排序，红黑树
+class Solution25 {
+public:
+    vector<int> GetLeastNumbers_Solution(const vector<int> &input, int k) {
+        vector<int> res;
+        auto len=int(input.size());
+        if(len<k||k==0||len==0){
+            return res;
+        }
+        list<int> fuck_res;
+        fuck_res.push_back(input[0]);
+        list<int>::iterator res_pos;
+        bool judge= true;
+        for(int i=1;i<k;++i){
+            res_pos=fuck_res.begin();
+            while(res_pos!=fuck_res.end()){
+                if(*res_pos>=input[i]){
+                    fuck_res.insert(res_pos,input[i]);
+                    judge=false;
+                    break;
+                }
+                ++res_pos;
+            }
+            if(judge){
+                fuck_res.insert(res_pos,input[i]);
+            }
+            judge=true;
+        }
+        for(int i=k;i<len;++i){
+            res_pos=fuck_res.begin();
+            while(res_pos!=fuck_res.end()){
+                if((*res_pos>=input[i])){
+                    fuck_res.insert(res_pos,input[i]);
+                    fuck_res.pop_back();
+                    break;
+                }
+                ++res_pos;
+            }
+        }
+        for(res_pos=fuck_res.begin();res_pos!=fuck_res.end();++res_pos){
+            res.push_back(*res_pos);
+        }
+        return res;
     }
+};
+
+
+//连续子数组的最大和
+class Solution26 {
+public:
+    int FindGreatestSumOfSubArray(vector<int> array) {
+        int res=array[0],tmp=0;
+        for(auto elem=array.begin();elem!=array.end();*elem++){
+            if(tmp+*elem<0){
+                tmp=(tmp<=0)?*elem:0;
+            } else {
+                tmp=(tmp<=0)?*elem:tmp+*elem;
+            }
+            res=res<tmp?tmp:res;
+        }
+        return res;
+    }
+};
+
+
+int main(){
+    Solution26 so;
+    vector<int> vec={-2,-8,-1,-5,-9};
+    auto res=so.FindGreatestSumOfSubArray(vec);
+    cout<<res;
 }
+
+//int main(){
+//    vector<int> res;
+//    vector<int> input={1,2,3,4,5};
+//    res.push_back(0);
+//    cout<<res[0];
+//}
