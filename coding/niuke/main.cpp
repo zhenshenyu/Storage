@@ -736,13 +736,94 @@ public:
     }
 };
 
+//整数中1出现的次数
+class Solution27 {
+public:
+    int NumberOf1Between1AndN_Solution(int n) {
+        if(n<=0){
+            return 0;
+        }
+        int base=1;
+        int point;
+        int right=0;
+        int count=0;
+        while(n) {
+            point = n % 10;
+            n = n / 10;
+            if (point > 1) {
+                count+=(n+1)*base;
+            } else if(point==0){
+                count+=n*base;
+            } else{
+                count+=n*base+right+1;
+            }
+            right=right+point*base;
+            base*=10;
+        }
+        return count;
+    }
+};
+
+
+//****把数组排成最小的数****
+class Solution28 {
+    static bool Compare(int a, int b){
+        string ab = to_string(a)+to_string(b);
+        string ba = to_string(b)+to_string(a);
+        return ab<ba;
+    }
+public:
+    string PrintMinNumber(vector<int> numbers) {
+        string result;
+        if(numbers.empty()){
+            return result;
+        }
+        sort(numbers.begin(),numbers.end(),Compare);
+        for(auto elem:numbers){
+            result.append(to_string(elem));
+        }
+        return result;
+    }
+};
+
+
+//丑数
+class Solution29 {
+public:
+    int GetUglyNumber_Solution(int index) {
+        if(index<1){
+            return 0;
+        }
+        vector<int> uglynumbers(index);
+        int position2=0;
+        int position3=0;
+        int position5=0;
+        uglynumbers[0]=1;
+        int next;
+        for(int i=1;i<index;i++){
+            int next=min(uglynumbers[position2]*2,min(uglynumbers[position3]*3,uglynumbers[position5]*5));
+            uglynumbers[i]=next;
+            if(uglynumbers[position2]*2<=next){
+                ++position2;
+            }
+            if(uglynumbers[position3]*3<=next){
+                ++position3;
+            }
+            if(uglynumbers[position5]*5<=next){
+                ++position5;
+            }
+        }
+        return uglynumbers[index-1];
+    }
+};
+
 
 int main(){
-    Solution26 so;
-    vector<int> vec={-2,-8,-1,-5,-9};
-    auto res=so.FindGreatestSumOfSubArray(vec);
-    cout<<res;
+    Solution29 so;
+    cout<<so.GetUglyNumber_Solution(3)<<endl;
 }
+
+
 
 //int main(){
 //    vector<int> res;
