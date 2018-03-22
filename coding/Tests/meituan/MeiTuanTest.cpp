@@ -54,5 +54,5 @@ int main(){
             bit = '0';
         }
     }
-    cout<<res;
+    cout<<res<<endl;
 }

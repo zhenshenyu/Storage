@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
-project(LeetCode)
+project(MeiTuanTest)
 
 set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES MeiTuanTest.cpp)
-add_executable(LeetCode ${SOURCE_FILES})
+add_executable(MeiTuanTest ${SOURCE_FILES})
