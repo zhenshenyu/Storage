@@ -1,6 +1,7 @@
 daily_mail.py
 .idea/
 *.pyc
+build/
 data/
 *data/
 daily_news/
