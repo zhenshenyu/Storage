@@ -1,40 +1,42 @@
+
 #include <iostream>
-#include <vector>
-#include <stack>
+
 
 using namespace std;
 
-#define ISNUMBER 1
-#define ISOPRATE 2
 
-
-
-int getclass(char chr){
-    switch (chr) {
-        case '+':
-        case '-':
-        case '*':
-        case '/':
-            return 1;
-        default:
-            if (chr >= '0' && chr <= '9') {
-                return 0;
-            } else{
-                return -1;
-            }
+long numPosb(const int &m,  int n){
+    if (m == 0) {
+        return n;
     }
-}
-
-int priority(char chr){
+    long long res=1;
+    for (int i = 1; i <= m; ++i) {
+        res*=n--;
+        res /=i;
+    }
+    return res;
 }
 
 
 int main(){
-    string var;
-    string res;
-    stack<char> sta;
-    getline(cin, var);
-    for (char chr:var) {
-        if()
+    int k;
+    cin>>k;
+    int a,x,b,y;
+    scanf("%d",&a);
+    scanf("%d",&x);
+    scanf("%d",&b);
+    scanf("%d",&y);
+    long count=0;
+    int left = k;
+    for(int i=0;i<x;++i){
+        if (left %b==0&&left<=b*y) {
+            count+=(numPosb(i,x)*(numPosb(left/b,y)));
+        }
+        left-=a;
+        if (left <= 0) {
+            break;
+        }
     }
+    cout<<count%1000000007;
+    return 0;
 }
