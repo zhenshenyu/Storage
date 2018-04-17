@@ -19,7 +19,7 @@ struct TreeNode {
  */
 class Solution {
 private:
-    int balance(int x, int y){
+    bool balance(int x, int y){
         return abs(x - y) <= 1;
     }
 
