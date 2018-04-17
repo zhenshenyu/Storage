@@ -736,13 +736,238 @@ public:
     }
 };
 
+//整数中1出现的次数
+class Solution27 {
+public:
+    int NumberOf1Between1AndN_Solution(int n) {
+        if(n<=0){
+            return 0;
+        }
+        int base=1;
+        int point;
+        int right=0;
+        int count=0;
+        while(n) {
+            point = n % 10;
+            n = n / 10;
+            if (point > 1) {
+                count+=(n+1)*base;
+            } else if(point==0){
+                count+=n*base;
+            } else{
+                count+=n*base+right+1;
+            }
+            right=right+point*base;
+            base*=10;
+        }
+        return count;
+    }
+};
 
-int main(){
-    Solution26 so;
-    vector<int> vec={-2,-8,-1,-5,-9};
-    auto res=so.FindGreatestSumOfSubArray(vec);
-    cout<<res;
+
+//****把数组排成最小的数****
+class Solution28 {
+    static bool Compare(int a, int b){
+        string ab = to_string(a)+to_string(b);
+        string ba = to_string(b)+to_string(a);
+        return ab<ba;
+    }
+public:
+    string PrintMinNumber(vector<int> numbers) {
+        string result;
+        if(numbers.empty()){
+            return result;
+        }
+        sort(numbers.begin(),numbers.end(),Compare);
+        for(auto elem:numbers){
+            result.append(to_string(elem));
+        }
+        return result;
+    }
+};
+
+
+//丑数
+class Solution29 {
+public:
+    int GetUglyNumber_Solution(int index) {
+        if(index<1){
+            return 0;
+        }
+        vector<int> uglynumbers(index);
+        int position2=0;
+        int position3=0;
+        int position5=0;
+        uglynumbers[0]=1;
+        int next;
+        for(int i=1;i<index;i++){
+            int next=min(uglynumbers[position2]*2,min(uglynumbers[position3]*3,uglynumbers[position5]*5));
+            uglynumbers[i]=next;
+            if(uglynumbers[position2]*2<=next){
+                ++position2;
+            }
+            if(uglynumbers[position3]*3<=next){
+                ++position3;
+            }
+            if(uglynumbers[position5]*5<=next){
+                ++position5;
+            }
+        }
+        return uglynumbers[index-1];
+    }
+};
+
+
+class Solution30 {
+public:
+    int FirstNotRepeatingChar(string str) {
+        map<char,int> elem_times;
+        for(auto i:str){
+            elem_times[i]++;
+        }
+        for (int i = 0; i < str.size(); ++i) {
+            if(elem_times[str[i]]==1){
+                return i;
+            }
+        }
+        return -1;
+    }
+};
+
+//****数组中的逆序对****
+class Solution31 {
+public:
+    int InversePairs(vector<int> data) {
+        if(data.empty()){
+            return 0;
+        }
+        long count=CountTwoPairs(data,0,data.size()-1);
+        return count%1000000007;
+    }
+
+    long CountTwoPairs(vector<int> &data,int start,int end){
+        if(start>=end){
+            return 0;
+        }
+        int mid=(start+end)/2;
+        long count=0;
+        count=count+CountTwoPairs(data,start,mid)+CountTwoPairs(data,mid+1,end);
+        int i=mid;
+        int j=end;
+        int insert_pos;
+        stack<int> tmp;
+        while(i>=start&&j>mid){
+            if(data[i]>data[j]){
+                count+=(j-mid);
+                tmp.push(data[i]);
+                i--;
+            } else{
+                tmp.push(data[j]);
+                j--;
+            }
+        }
+        if(j==mid){
+            ++i;
+            for(;i<=end;i++){
+                data[i]=tmp.top();
+                tmp.pop();
+            }
+        } else {
+            for (insert_pos = j; insert_pos > mid; insert_pos--) {
+                tmp.push(data[insert_pos]);
+            }
+            while (start <= end) {
+                data[start] = tmp.top();
+                tmp.pop();
+                ++start;
+            }
+        }
+        return count;
+    }
+};
+
+
+//两个链表的第一个公共节点
+class Solution32 {
+public:
+    ListNode* FindFirstCommonNode(ListNode* pHead1, ListNode* pHead2) {
+        if (!pHead1 || !pHead2) {
+            return NULL;
+        }
+        int len1=0,len2=0;
+        ListNode *pos1=pHead1,*pos2=pHead2;
+        while(pos1->val){
+            ++len1;
+            pos1=pos1->next;
+        }
+        while(pos2->val){
+            ++len2;
+            pos2=pos2->next;
+        }
+        if(len1>len2){
+            for (int i = 0; i < len1 - len2; i++) {
+                pHead1=pHead1->next;
+            }
+        } else{
+            for (int i = 0; i < len2-len1; ++i) {
+                pHead2=pHead2->next;
+            }
+        }
+        while(pHead1){
+            if(pHead1==pHead2){
+                break;
+            }
+            pHead1=pHead1->next;
+            pHead2=pHead2->next;
+        }
+        return pHead1;
+    }
+};
+
+//统计数字在排序数组中出现的次数
+class Solution33 {
+public:
+    int GetNumberOfK(vector<int> data ,int k) {
+        int len=data.size();
+        int low=0,high=len-1;
+        int mid=(high+low)/2;
+        while(low<=high){
+            if(data[mid]==k){
+                int count=0;
+
+            }
+            if(data[mid]>k){
+                high=mid-1;
+                mid=(high+low)/2;
+            }else{
+                low=mid+1;
+                mid=(high+low)/2;
+            }
+        }
+        return 0;
+    }
+};
+
+class Year {
+private:
+    int y;
+public:
+    static int Inity;
+public:
+    static void print_static(){
+        cout<<Inity<<endl;
+    }
+};
+int Year::Inity=1997;//静态变量的赋值方法,注意必须放在类外定义
+
+
+int main()
+{
+    Solution31 so;
+    cout<<49333027700%1000000007<<endl;
+    return 0;
 }
+
 
 //int main(){
 //    vector<int> res;
