@@ -206,7 +206,7 @@ def simpleTest(location):
 def classifyVector(inX, weights):
     """
     Desc:
-        最终的分类函数，根据回归系数和特征向量来计算 Sigmoid 的值，大于0.5函数返回1，否则返回0
+        最终的分类函d数，根据回归系数和特征向量来计算 Sigmoid 的值，大于0.5函数返回1，否则返回0
     Args:
         inX -- 特征向量，features
         weights -- 根据梯度下降/随机梯度下降 计算得到的回归系数
