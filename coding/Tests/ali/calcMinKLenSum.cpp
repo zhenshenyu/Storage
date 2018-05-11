@@ -22,7 +22,6 @@ using namespace std;
 
 /******************************开始写代码******************************/
 
-// 思路使用递归遍历
 int calcMinKLenSum(string& first, string& second){
     int max=0;
     int len_first = first.size();
