@@ -75,7 +75,7 @@ int main(){
     root->left->right = new TreeNode(4);
     root->right->left = new TreeNode(5);
     Solution solution;
-    auto res = solution.Print(root);
+    auto res = solution.ZigZagLinePrint(root);
     for (auto fl:res) {
         for (auto elem:fl) {
             cout << elem << endl;
